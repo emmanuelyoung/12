@@ -1,0 +1,49 @@
+#include<iostream>
+#include<queue>
+#include<algorithm>
+#include<numeric>
+#include<cstring>
+using namespace std;
+int k,m,n;
+typedef pair<int,int> PII;
+bool st[51][51];
+queue<PII> a;
+int dx[]={0,-1,0,1},dy[]={-1,0,1,0};
+int ans=0;
+bool check(int x,int y){
+	int s=0;
+	while(x){
+		s+=x%10;
+		x/=10;
+	}
+	while(y){
+		s+=y%10;
+		y/=10;
+	}
+	return s<=k;
+}
+void bfs(int x,int y){
+	a.push({x,y});
+	st[x][y]=1;
+	ans++;
+	while(!a.empty()){
+		PII t=a.front();
+		a.pop();
+		for(int i=0;i<4;i++){
+			int r=t.first+dx[i],c=t.second+dy[i];
+			if(r>=0&&r<m&&c>=0&&c<n&&!st[r][c]){
+				st[r][c]=1;
+				if(check(r,c)){
+					a.push({r,c});
+					ans++;
+				}
+			}
+		}
+	}
+}
+int main()
+{
+	cin >> k >> m >> n;
+	bfs(0,0);
+	cout << ans;
+}
